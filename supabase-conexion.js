@@ -1,4 +1,3 @@
-// 🔌 Script de Conexión a Supabase para Keka Terapias
 const SUPABASE_URL = 'https://ciddpvkcdoevfprlzhtg.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_F10DXS9eoGkfmLuzf5J2lQ_T8jf2oLJ';
 
@@ -18,8 +17,15 @@ async function cargarPromociones() {
     if (!response.ok) throw new Error(`Error ${response.status}`);
     const promociones = await response.json();
     console.log('✅ Promociones cargadas:', promociones.length);
+    
     window.promos = promociones;
+    
+    // Limpiar el track anterior
+    const track = document.getElementById('promo-track');
+    if (track) track.innerHTML = '';
+    
     if (typeof buildPromos === 'function') {
+      console.log('🔄 Reconstruyendo slider con', promociones.length, 'promos...');
       buildPromos();
       if (promos.length > 1 && typeof resetPromoInterval === 'function') {
         resetPromoInterval();
