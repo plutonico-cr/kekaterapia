@@ -17,7 +17,7 @@ async function cargarPromociones() {
     const promociones = await response.json();
     console.log('✅ Promociones cargadas:', promociones.length);
     
-    window.promos = promociones;
+    promos = promociones;
     promoIndex = 0;
     
     if (typeof buildPromos === 'function') {
