@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Keka Terapias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8f6f3;
+            color: #333;
+        }
+
+        /* HEADER */
+        header {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #9db8a0;
+            font-weight: 600;
+        }
+
+        .btn-agenda {
+            background: #9db8a0;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-agenda:hover {
+            background: #8da890;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #f8f6f3 0%, #f0ebe5 100%);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        /* FILTROS */
+        .filters {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #9db8a0;
+            color: white;
+            border-color: #9db8a0;
+        }
+
+        /* CONTENEDOR DE ARTÍCULOS */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .articulos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        /* TARJETA DE ARTÍCULO */
+        .articulo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .articulo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .articulo-foto {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .articulo-content {
+            padding: 25px;
+        }
+
+        .articulo-categoria {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #666;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .articulo-titulo {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .articulo-descripcion {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .articulo-leer-mas {
+            color: #9db8a0;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: color 0.3s ease;
+        }
+
+        .articulo-leer-mas:hover {
+            color: #7a9780;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-foto {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .modal-titulo {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .modal-categoria {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #666;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .modal-contenido {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        /* ESTADO VACÍO */
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .empty p {
+            font-size: 1.1em;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .spinner {
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #9db8a0;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* FOOTER */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            nav {
+                gap: 15px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .articulos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 30px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo">Keka Terapias</div>
+            <nav>
+                <a href="index.html">Inicio</a>
+                <a href="index.html#promos">Promos</a>
+                <a href="index.html#filosofia">Filosofia</a>
+                <a href="index.html#galeria">Galeria</a>
+                <a href="index.html#servicios">Servicios</a>
+                <a href="articulos.html" class="active">Blog</a>
+                <a href="#" class="btn-agenda">Agenda tu cita</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Blog & Artículos</h1>
+            <p>Consejos, guías y artículos informativos sobre cuidado, bienestar y belleza</p>
+        </div>
+    </section>
+
+    <!-- FILTROS -->
+    <div class="filters">
+        <button class="filter-btn active" data-categoria="todos">Todos</button>
+        <button class="filter-btn" data-categoria="Cuidado de Pies">🦶 Cuidado de Pies</button>
+        <button class="filter-btn" data-categoria="Masajes">💆 Masajes</button>
+        <button class="filter-btn" data-categoria="Belleza">💄 Belleza</button>
+        <button class="filter-btn" data-categoria="Bienestar">🧘 Bienestar</button>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="container">
+        <div id="articulos-container" class="articulos-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando artículos...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <img id="modal-foto" src="" alt="" class="modal-foto">
+            <span id="modal-categoria" class="modal-categoria"></span>
+            <h1 id="modal-titulo" class="modal-titulo"></h1>
+            <p id="modal-contenido" class="modal-contenido"></p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Keka Terapias. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Configuración de Supabase
+        const SUPABASE_URL = 'https://ciddpvkcdoevfprlzhtg.supabase.co'
+        const SUPABASE_KEY = 'sb_publishable_F10DXS9eoGkfmLuzf5J2lQ_T8jf2oLJ'
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+        // Variables globales
+        let articulos = []
+        let categoriaSeleccionada = 'todos'
+
+        // Elementos del DOM
+        const container = document.getElementById('articulos-container')
+        const modal = document.getElementById('modal')
+        const modalClose = document.querySelector('.modal-close')
+        const filtros = document.querySelectorAll('.filter-btn')
+
+        // CARGAR ARTÍCULOS
+        async function cargarArticulos() {
+            try {
+                const { data, error } = await supabase
+                    .from('articulos')
+                    .select('*')
+                    .eq('activo', true)
+                    .order('created_at', { ascending: false })
+
+                if (error) throw error
+
+                articulos = data || []
+                mostrarArticulos()
+            } catch (error) {
+                console.error('Error cargando artículos:', error)
+                container.innerHTML = `
+                    <div class="empty">
+                        <div class="empty-icon">⚠️</div>
+                        <p>Error al cargar los artículos. Intenta más tarde.</p>
+                    </div>
+                `
+            }
+        }
+
+        // MOSTRAR ARTÍCULOS
+        function mostrarArticulos() {
+            const articulosFiltrados = categoriaSeleccionada === 'todos'
+                ? articulos
+                : articulos.filter(a => a.categoria === categoriaSeleccionada)
+
+            if (articulosFiltrados.length === 0) {
+                container.innerHTML = `
+                    <div class="empty" style="grid-column: 1/-1;">
+                        <div class="empty-icon">📚</div>
+                        <p>No hay artículos en esta categoría aún.</p>
+                    </div>
+                `
+                return
+            }
+
+            container.innerHTML = articulosFiltrados.map(articulo => `
+                <div class="articulo-card" onclick="abrirArticulo(${articulo.id})">
+                    ${articulo.foto_url ? `<img src="${articulo.foto_url}" alt="${articulo.titulo}" class="articulo-foto">` : '<div class="articulo-foto" style="background: #f0f0f0;"></div>'}
+                    <div class="articulo-content">
+                        <div class="articulo-categoria">${articulo.categoria}</div>
+                        <h3 class="articulo-titulo">${articulo.titulo}</h3>
+                        <p class="articulo-descripcion">${articulo.descripcion || articulo.contenido.substring(0, 100)}</p>
+                        <a href="#" class="articulo-leer-mas">Leer más →</a>
+                    </div>
+                </div>
+            `).join('')
+        }
+
+        // ABRIR ARTÍCULO EN MODAL
+        function abrirArticulo(id) {
+            const articulo = articulos.find(a => a.id === id)
+            if (!articulo) return
+
+            document.getElementById('modal-foto').src = articulo.foto_url || ''
+            document.getElementById('modal-categoria').textContent = articulo.categoria
+            document.getElementById('modal-titulo').textContent = articulo.titulo
+            document.getElementById('modal-contenido').textContent = articulo.contenido
+
+            modal.classList.add('active')
+        }
+
+        // CERRAR MODAL
+        function cerrarModal() {
+            modal.classList.remove('active')
+        }
+
+        // FILTROS
+        filtros.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                filtros.forEach(b => b.classList.remove('active'))
+                e.target.classList.add('active')
+                categoriaSeleccionada = e.target.dataset.categoria
+                mostrarArticulos()
+            })
+        })
+
+        // CERRAR MODAL AL HACER CLIC EN X
+        modalClose.addEventListener('click', cerrarModal)
+
+        // CERRAR MODAL AL HACER CLIC AFUERA
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) cerrarModal()
+        })
+
+        // CARGAR AL INICIAR
+        cargarArticulos()
+    </script>
+</body>
+</html>
